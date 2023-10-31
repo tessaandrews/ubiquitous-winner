@@ -1,6 +1,4 @@
-const thoughts = require("../controllers/thoughts");
-
-const Users = [
+const users = [
     'Aaran',
     'Aaren',
     'Aarez',
@@ -101,21 +99,21 @@ const Users = [
   const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
   
   // Gets a random full name
-  const getRandomName = () =>
-    `${getRandomArrItem(names)} ${getRandomArrItem(names)}`;
+  const getRandomUser = () =>
+    `${getRandomArrItem(users)} ${getRandomArrItem(users)}`;
   
   // Function to generate random assignments that we can add to student object.
-  const getRandomAssignments = (int) => {
+  const getRandomThoughts = (int) => {
     const results = [];
     for (let i = 0; i < int; i++) {
       results.push({
-        assignmentName: getRandomArrItem(thoughts),
-        score: Math.floor(Math.random() * (99 - 70 + 1) + 70),
+        thoughtName: getRandomArrItem(thoughts),
+        //score: Math.floor(Math.random() * (99 - 70 + 1) + 70),
       });
     }
     return results;
   };
   
   // Export the functions for use in seed.js
-  module.exports = { getRandomName, getRandomAssignments };
+  module.exports = { getRandomUser, getRandomThoughts };
   

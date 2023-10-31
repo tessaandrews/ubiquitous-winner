@@ -1,20 +1,19 @@
 const { Schema, model } = require('mongoose');
-const userSchema = require('./Thought')
+//const usersSchema = require('./Thought')
 
 
-const userSchema = new Schema(
+const usersSchema = new Schema(
   {
-    username: {
+    id: {
       type: String,
       required: true,
-      //thoughtName: {
-      //  type: String,
-       // required: true,
-       // maxlength: 50,
-       // minlength: 4,
-       // default: 'Unnamed thought',
-     // },
-     // max_length: 50,
+    },
+    thoughtName: {
+      type: String,
+       required: true,
+      maxlength: 50,
+      minlength: 4,
+       default: 'Unnamed thought',
     unique: true,
       //trimmed: true,
     },
@@ -24,12 +23,12 @@ const userSchema = new Schema(
       max_length: 50,
      // must match valid email address
     },
-    github: {
-      type: String,
-      required: true,
-      max_length: 50,
-    },
-    thought: [thoughtSchema],
+    //github: {
+    //  type: String,
+      //required: true,
+     // max_length: 50,
+   // },
+    //thought: [thoughtSchema],
   },
   {
     toJSON: {
@@ -39,7 +38,7 @@ const userSchema = new Schema(
   }
 );
 
-userSchema
+usersSchema
   .virtual('fullName')
   // Getter
   .get(function () {
@@ -53,7 +52,7 @@ userSchema
   });
 
 // Initialize our User model
-const User = model('user', userSchema);
+const User = model('user', usersSchema);
 
 module.exports = User;
 

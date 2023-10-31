@@ -1,6 +1,6 @@
 const connection = require('../config/connection');
 const User = require('../models/User');
-const { getRandomName } = require('./data');
+const { getRandomUser } = require('./data');
 
 // Start the seeding runtime timer
 console.time('seeding');
@@ -17,11 +17,11 @@ connection.once('open', async () => {
   const users = [];
 
   for (let i = 0; i < 10; i++) {
-    const name = getRandomName();
+    const user = getRandomUser();
     const newUser = {
-      first: name.split(' ')[0],
-      last: name.split(' ')[1],
-      age: Math.floor(Math.random() * 99 + 1),
+      //first: name.split(' ')[0],
+      //last: name.split(' ')[1],
+      //age: Math.floor(Math.random() * 99 + 1),
     };
     users.push(newUser);
   }

@@ -1,10 +1,15 @@
 const { Schema, Types } = require('mongoose');
+const { STRING } = require('sequelize');
 
-const thoughtText = new Schema(
-
+const thoughtSchema = new Schema(
   {
-    username: {
-      type: STRING,
+    thoughtText: {
+      type: String,
+      required: true,
+    },
+  
+    id: {
+      type: String,
       required: true,
     },
     reactions: {
@@ -16,16 +21,16 @@ const thoughtText = new Schema(
       default: Date.now,
     },
     toJSON: {
-      getters: true,
+      //getters: true,
     },
-    id: false,
+    //id: false,
   }
 );
 
-const thought = model('thought', thoughtText);
+//const thought = model('thought', thoughtSchema);
 
 
-module.exports = thought;
+module.exports = thoughtSchema;
 
 //* `thoughtText`
  // * String
