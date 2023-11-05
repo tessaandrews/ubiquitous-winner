@@ -1,36 +1,21 @@
 const { Schema, model } = require('mongoose');
-//const usersSchema = require('./Thought')
 
-
-const usersSchema = new Schema(
+// Schema to create User model
+const userSchema = new Schema(
   {
-    id: {
-      type: String,
-      required: true,
-    },
-    thoughtName: {
-      type: String,
-       required: true,
-      maxlength: 50,
-      minlength: 4,
-       default: 'Unnamed thought',
-    unique: true,
-      //trimmed: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      max_length: 50,
-     // must match valid email address
-    },
-    //github: {
-    //  type: String,
-      //required: true,
-     // max_length: 50,
-   // },
-    //thought: [thoughtSchema],
+    first: String,
+    last: String,
+    age: Number,
+    applications: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'thought',
+      },
+    ],
   },
   {
+    // Mongoose supports two Schema options to transform Objects after querying MongoDb: toJSON and toObject.
+    // Here we are indicating that we want virtuals to be included with our response, overriding the default behavior
     toJSON: {
       virtuals: true,
     },
@@ -38,7 +23,8 @@ const usersSchema = new Schema(
   }
 );
 
-usersSchema
+// Create a virtual property `fullName` that gets and sets the user's full name
+userSchema
   .virtual('fullName')
   // Getter
   .get(function () {
@@ -52,29 +38,8 @@ usersSchema
   });
 
 // Initialize our User model
-const User = model('user', usersSchema);
+const User = model('user', userSchema);
 
 module.exports = User;
 
 
-//* `username`
- // * String
- // * Unique
- // * Required
- // * Trimmed
-
-//* `email`
- // * String
- // * Required
- // * Unique
-  //* Must match a valid email address (look into Mongoose's matching validation)
-
-//* `thoughts`
- // * Array of `_id` values referencing the `Thought` model
-
-//* `friends`
-// * Array of `_id` values referencing the `User` model (self-reference)
-
-//**Schema Settings**:
-
-//Create a virtual called `friendCount` that retrieves the length of the user's `friends` array field on query.

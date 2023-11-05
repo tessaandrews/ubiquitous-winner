@@ -1,36 +1,40 @@
-const { Schema, Types } = require('mongoose');
-const { STRING } = require('sequelize');
+const { Schema, model } = require('mongoose');
+
 
 const thoughtSchema = new Schema(
   {
-    thoughtText: {
-      type: String,
-      required: true,
-    },
-  
-    id: {
-      type: String,
-      required: true,
-    },
+  thoughtText: {
+    type: String,
+    required: true,
+    maxlength: 280,
+    minlength: 1,
+  },
+  createdAt: {
+  type: Date,
+  default: Date.now,
+  getters: true,
+  },
+   username: {
+     type: String,
+     required: true,
+   },
     reactions: {
       type: Number,
       required: true,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    toJSON: {
-      //getters: true,
-    },
-    //id: false,
-  }
+   }
 );
+thoughtSchema
+  .virtual('getReactions')
+  // Getter
+  .get(function () {
+    return this.tags.length;
+  });
 
-//const thought = model('thought', thoughtSchema);
+// Initialize our Application model
+const Reaction = model('reactions', thoughtSchema);
 
-
-module.exports = thoughtSchema;
+module.exports = Reaction;
 
 //* `thoughtText`
  // * String
