@@ -16,7 +16,7 @@ module.exports = {
   // Get a thought
   async getSingleThought(req, res) {
     try {
-      const thought = await Thought.findOne({ _id: req.params.id })
+      const thought = await Thought.findOne({ _id: req.params.username })
         .select('-__v');
 
       if (!thought) {
@@ -41,7 +41,7 @@ module.exports = {
   // Delete a thought
   async deleteThought(req, res) {
     try {
-      const thought = await thought.findOneAndDelete({ _id: req.params.id });
+      const thought = await thought.findOneAndDelete({ _id: req.params.username });
 
       if (!thought) {
         res.status(404).json({ message: 'No thought with that ID' });
