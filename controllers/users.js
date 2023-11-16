@@ -1,6 +1,6 @@
-const User = require('../models/User');
+const {User, Thought} = require('../models');
 
-module.exports = {
+const userController = {
   async getUsers(req, res) {
     try {
       const users = await User.find();
@@ -12,12 +12,14 @@ module.exports = {
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
-        .select('-__v');
+        .select('-__v')
+        // .populate('friends')
+        // .populate('thoughts')
 
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
       }
-
+      console.log(user);
       res.json(user);
     } catch (err) {
       res.status(500).json(err);
@@ -35,16 +37,15 @@ module.exports = {
 
 async deleteUser (req, res) {
   try {
-    const user = await User.findOneAndRemove({ _id: req.params.userId });
+    const user = await User.findOneAndDelete({ _id: req.params.userId });
 
     if (!user) {
       return res.status(404).json({ message: 'No such user exists' });
     }
 
-    const Thought = await Thought.findOneAndUpdate(
-      { user: req.params.userId },
-      { $pull: { users: req.params.userId } },
-      { new: true }
+    const Thought = await Thought.deleteMany(
+      { 
+        _id : {$in: user.thoughts} },
     );
 
     if (!thought) {
@@ -60,15 +61,33 @@ async deleteUser (req, res) {
   }
 },
 
+async updateUser (req, res) {
+  try {
+    const user = await User.findOneAndUpdate(
+      {_id: req.params.userId},
+      {$set: req.body},
+      {new: true},
+    )
+    if (!user) {
+      return res.status(404).json({ message: 'No such user exists' });
+    }
+    res.json(user)
+  }
+  catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+},
 
-async addThought(req, res) {
-  console.log('You are adding a thought');
-  console.log(req.body);
+
+
+
+async addFriend(req, res) {
 
   try {
     const user = await User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $addToSet: { thoughts: req.body } },
+      { $addToSet: { friends: req.params.friendId } },
       { runValidators: true, new: true }
     );
 
@@ -84,11 +103,11 @@ async addThought(req, res) {
   }
 },
 
-  async removeThought(req, res) {
+  async removeFriend(req, res) {
     try {
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: { thought: { thoughtId: req.params.thoughtId } } },
+        { $pull: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       );
 
@@ -105,3 +124,5 @@ async addThought(req, res) {
   
   },
 };
+
+module.exports = userController
