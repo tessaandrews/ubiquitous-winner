@@ -40,7 +40,6 @@ thoughtSchema
 
 // Initialize our Application model
 const Thought = model('reactions', thoughtSchema);
-
 module.exports = Thought
 
 //* `thoughtText`

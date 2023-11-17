@@ -13,8 +13,8 @@ const userController = {
     try {
       const user = await User.findOne({ _id: req.params.userId })
         .select('-__v')
-        // .populate('friends')
-        // .populate('thoughts')
+        .populate('friends')
+        .populate('thoughts')
 
       if (!user) {
         return res.status(404).json({ message: 'No user with that ID' });
@@ -41,7 +41,7 @@ async deleteUser (req, res) {
 
     if (!user) {
       return res.status(404).json({ message: 'No such user exists' });
-    }
+    };
 
     const Thought = await Thought.deleteMany(
       { 

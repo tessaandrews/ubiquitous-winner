@@ -7,8 +7,8 @@ connection.on('error', (err) => err);
 connection.once('open', async () => {
   console.log('connected');
     // Delete the collections if they exist
-    let thoughtCheck = await connection.db.listCollections({ name: 'thoughts' }).toArray();
-    if (thoughtCheck.length) {
+    let thoughtsCheck = await connection.db.listCollections({ name: 'thoughts' }).toArray();
+    if (thoughtsCheck.length) {
       await connection.dropCollection('thoughts');
     }
 
@@ -38,13 +38,12 @@ connection.once('open', async () => {
   await User.collection.insertMany(users);
 
   await Thought.collection.insertOne({
-    thoughtName: "HI!",
+    thoughtText: "HI!",
     reaction: "Loved This!",
     users: [...users],
   });
 
   // Log out the seed data to indicate what should appear in the database
-  console.table(users);
   console.info('Seeding complete! 🌱');
   process.exit(0);
 });
